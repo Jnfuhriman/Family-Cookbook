@@ -1,23 +1,114 @@
-# Getting Started with Create React App
+# Family Cookbook
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A full-stack web application for managing and sharing family recipes, built with React and Node.js.
 
-## Available Scripts
+## Project Structure
 
-In the project directory, you can run:
+```
+family-cookbook/
+├── frontend/          # React application
+│   ├── src/
+│   ├── public/
+│   ├── package.json
+│   └── node_modules/
+├── backend/           # Node.js + Express API
+│   ├── models/
+│   ├── routes/
+│   ├── server.js
+│   ├── package.json
+│   └── node_modules/
+└── README.md         # This file
+```
 
-### `npm start`
+## Getting Started
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### Prerequisites
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- Node.js (14+ recommended)
+- MongoDB (running locally or remote connection)
 
-### `npm test`
+### Installation & Setup
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+1. **Clone the repository**
+
+   ```bash
+   git clone <repository-url>
+   cd family-cookbook
+   ```
+
+2. **Setup Backend**
+
+   ```bash
+   cd backend
+   npm install
+   npm start
+   ```
+
+   The API will run on `http://localhost:5000`
+
+3. **Setup Frontend** (in a new terminal)
+   ```bash
+   cd frontend
+   npm install
+   npm start
+   ```
+   The React app will run on `http://localhost:3000`
+
+## Features
+
+- ✅ Create, read, update, and delete recipes
+- ✅ Categorize recipes (appetizer, main course, dessert, etc.)
+- ✅ Add ingredients with amounts and units
+- ✅ Step-by-step cooking instructions
+- ✅ Search and filter recipes
+- ✅ Responsive design for mobile and desktop
+- ✅ MongoDB database storage
+- ✅ RESTful API endpoints
+
+## API Endpoints
+
+- `GET /api/recipes` - Get all recipes
+- `POST /api/recipes` - Create new recipe
+- `GET /api/recipes/:id` - Get single recipe
+- `PUT /api/recipes/:id` - Update recipe
+- `DELETE /api/recipes/:id` - Delete recipe
+- `GET /api/recipes/search/:query` - Search recipes
+- `GET /api/recipes/category/:category` - Get recipes by category
+
+## Technologies Used
+
+### Frontend
+
+- React 19
+- CSS3 with modern layouts
+- Fetch API for HTTP requests
+
+### Backend
+
+- Node.js
+- Express.js
+- Mongoose (MongoDB ODM)
+- CORS middleware
+- dotenv for environment variables
+
+## Development
+
+### Frontend Development
+
+```bash
+cd frontend
+npm start          # Start development server
+npm test           # Run tests
+npm run build      # Build for production
+```
+
+### Backend Development
+
+```bash
+cd backend
+npm start          # Start production server
+npm run dev        # Start with nodemon (auto-restart)
+```
 
 ### `npm run build`
 
