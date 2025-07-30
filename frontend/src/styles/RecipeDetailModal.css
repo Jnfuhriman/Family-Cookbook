@@ -576,3 +576,137 @@
     font-size: 0.9rem;
   }
 }
+
+/* Passphrase Modal Styles */
+.passphrase-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.passphrase-modal {
+  background: white;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  animation: slideIn 0.3s ease-out;
+}
+
+.passphrase-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.passphrase-modal-header h3 {
+  margin: 0;
+  color: #333;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.passphrase-modal-close {
+  background: none;
+  border: none;
+  font-size: 1.8rem;
+  color: #999;
+  cursor: pointer;
+  padding: 0;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.2s;
+}
+
+.passphrase-modal-close:hover {
+  background: #f0f0f0;
+  color: #666;
+}
+
+.passphrase-modal-body {
+  padding: 1.5rem;
+}
+
+.passphrase-modal-body p {
+  margin: 0 0 1rem 0;
+  color: #555;
+  line-height: 1.6;
+}
+
+.passphrase-input {
+  width: 100%;
+  padding: 0.8rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: border-color 0.2s;
+  box-sizing: border-box;
+}
+
+.passphrase-input:focus {
+  outline: none;
+  border-color: #5b21b6;
+  box-shadow: 0 0 0 3px rgba(91, 33, 182, 0.1);
+}
+
+.passphrase-input.error {
+  border-color: #f44336;
+}
+
+.passphrase-error {
+  color: #f44336;
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+  line-height: 1.4;
+}
+
+.passphrase-modal-actions {
+  display: flex;
+  gap: 1rem;
+  padding: 1.5rem;
+  border-top: 1px solid #e0e0e0;
+  justify-content: flex-end;
+}
+
+.passphrase-cancel-btn,
+.passphrase-submit-btn {
+  padding: 0.8rem 1.5rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.passphrase-cancel-btn {
+  background: #f5f5f5;
+  color: #666;
+}
+
+.passphrase-cancel-btn:hover {
+  background: #e0e0e0;
+}
+
+.passphrase-submit-btn {
+  background: #5b21b6;
+  color: white;
+}
+
+.passphrase-submit-btn:hover {
+  background: #4c1d95;
+}

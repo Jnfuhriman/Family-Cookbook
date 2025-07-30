@@ -5,6 +5,9 @@ const RecipeDetailModal = ({ recipe, isOpen, onClose, onSave }) => {
   const [checkedIngredients, setCheckedIngredients] = useState({});
   const [isEditing, setIsEditing] = useState(false);
   const [editedRecipe, setEditedRecipe] = useState(null);
+  const [showPassphraseModal, setShowPassphraseModal] = useState(false);
+  const [passphrase, setPassphrase] = useState("");
+  const [passphraseError, setPassphraseError] = useState("");
 
   useEffect(() => {
     if (recipe) {
@@ -48,7 +51,29 @@ const RecipeDetailModal = ({ recipe, isOpen, onClose, onSave }) => {
   };
 
   const handleEdit = () => {
+    setShowPassphraseModal(true);
+    setPassphrase("");
+    setPassphraseError("");
+  };
+
+  const handlePassphraseSubmit = () => {
+    if (passphrase !== "Jake is awesome!") {
+      setPassphraseError(
+        "Please enter the correct passphrase to edit this recipe."
+      );
+      return;
+    }
+
+    setShowPassphraseModal(false);
+    setPassphrase("");
+    setPassphraseError("");
     setIsEditing(true);
+  };
+
+  const handlePassphraseCancel = () => {
+    setShowPassphraseModal(false);
+    setPassphrase("");
+    setPassphraseError("");
   };
 
   const handleSave = async () => {
@@ -429,6 +454,58 @@ const RecipeDetailModal = ({ recipe, isOpen, onClose, onSave }) => {
           </div>
         </div>
       </div>
+
+      {/* Passphrase Validation Modal */}
+      {showPassphraseModal && (
+        <div className="passphrase-modal-overlay">
+          <div className="passphrase-modal">
+            <div className="passphrase-modal-header">
+              <h3>Enter Passphrase</h3>
+              <button
+                className="passphrase-modal-close"
+                onClick={handlePassphraseCancel}
+              >
+                ×
+              </button>
+            </div>
+            <div className="passphrase-modal-body">
+              <p>Please enter the required passphrase to edit this recipe:</p>
+              <input
+                type="text"
+                value={passphrase}
+                onChange={(e) => setPassphrase(e.target.value)}
+                onKeyPress={(e) =>
+                  e.key === "Enter" && handlePassphraseSubmit()
+                }
+                placeholder="Enter passphrase..."
+                className={
+                  passphraseError
+                    ? "passphrase-input error"
+                    : "passphrase-input"
+                }
+                autoFocus
+              />
+              {passphraseError && (
+                <div className="passphrase-error">{passphraseError}</div>
+              )}
+            </div>
+            <div className="passphrase-modal-actions">
+              <button
+                className="passphrase-cancel-btn"
+                onClick={handlePassphraseCancel}
+              >
+                Cancel
+              </button>
+              <button
+                className="passphrase-submit-btn"
+                onClick={handlePassphraseSubmit}
+              >
+                Continue
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
