@@ -9,6 +9,9 @@ backend/node_modules/
 frontend/build/
 /build
 
+# Temporary files and parsing output
+backend/temp/
+
 # Environment variables
 backend/.env
 .env.local

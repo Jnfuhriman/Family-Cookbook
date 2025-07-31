@@ -28,6 +28,7 @@ connectDB();
 
 // Import routes
 const recipeRoutes = require("./routes/recipes");
+const adminRoutes = require("./routes/admin");
 
 // Routes
 app.get("/", (req, res) => {
@@ -36,6 +37,9 @@ app.get("/", (req, res) => {
 
 // Use recipe routes
 app.use("/api/recipes", recipeRoutes);
+
+// Use admin routes
+app.use("/api/admin", adminRoutes);
 
 // Start server
 app.listen(PORT, () => {
