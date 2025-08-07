@@ -22,6 +22,20 @@ const RecipeDetailModal = ({ recipe, isOpen, onClose, onSave }) => {
     }
   }, [recipe]);
 
+  // Handle body scroll prevention
+  useEffect(() => {
+    if (isOpen) {
+      document.body.classList.add("modal-open");
+    } else {
+      document.body.classList.remove("modal-open");
+    }
+
+    // Cleanup on unmount
+    return () => {
+      document.body.classList.remove("modal-open");
+    };
+  }, [isOpen]);
+
   // Check if changes have been made
   const hasChanges = () => {
     if (!recipe || !editedRecipe) return false;

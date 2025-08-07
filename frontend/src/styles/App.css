@@ -5,6 +5,24 @@
   flex-direction: column;
 }
 
+/* Prevent body scroll when modal is open */
+body.modal-open {
+  overflow: hidden;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+}
+
+@media (max-width: 768px) {
+  body.modal-open {
+    overflow: hidden;
+    position: fixed;
+    width: 100%;
+    height: 100vh;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
 .App-header {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   min-height: 25vh;
@@ -126,6 +144,7 @@
   font-size: 1rem;
   transition: border-color 0.3s, box-shadow 0.3s;
   background: white;
+  box-sizing: border-box;
 }
 
 .search-input:focus {
@@ -238,8 +257,14 @@
     font-size: 1.5rem;
   }
 
+  .search-container {
+    padding: 0 0.5rem;
+  }
+
   .search-input {
     max-width: 100%;
+    box-sizing: border-box;
+    width: 100%;
   }
 
   .category-header {
