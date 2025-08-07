@@ -8,18 +8,27 @@ const PORT = process.env.PORT || 5000;
 
 // Middleware
 const corsOptions = {
-  origin:
-    process.env.NODE_ENV === "production"
-      ? [
-          "https://family-cookbook-frontend-g6of15ap7-jake-fuhrimans-projects.vercel.app",
-          "https://family-cookbook-frontend.vercel.app",
-          "https://family-cookbook-frontend-jhv9cqog7-jake-fuhrimans-projects.vercel.app",
-          "https://family-cookbook-frontend-at0oovu9r-jake-fuhrimans-projects.vercel.app",
-          // Allow all vercel app domains for this project
-          /^https:\/\/family-cookbook-frontend.*\.vercel\.app$/,
-          /^https:\/\/.*jake-fuhrimans-projects\.vercel\.app$/,
-        ]
-      : ["http://localhost:3000"],
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+
+    // In production, allow Vercel domains
+    if (process.env.NODE_ENV === "production") {
+      if (
+        origin.includes("vercel.app") &&
+        origin.includes("family-cookbook-frontend")
+      ) {
+        return callback(null, true);
+      }
+      return callback(new Error("Not allowed by CORS"));
+    } else {
+      // In development, allow localhost
+      if (origin.includes("localhost")) {
+        return callback(null, true);
+      }
+      return callback(new Error("Not allowed by CORS"));
+    }
+  },
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],
