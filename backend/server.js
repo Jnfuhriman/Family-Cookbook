@@ -13,9 +13,16 @@ const corsOptions = {
       ? [
           "https://family-cookbook-frontend-g6of15ap7-jake-fuhrimans-projects.vercel.app",
           "https://family-cookbook-frontend.vercel.app",
+          "https://family-cookbook-frontend-jhv9cqog7-jake-fuhrimans-projects.vercel.app",
+          "https://family-cookbook-frontend-at0oovu9r-jake-fuhrimans-projects.vercel.app",
+          // Allow all vercel app domains for this project
+          /^https:\/\/family-cookbook-frontend.*\.vercel\.app$/,
+          /^https:\/\/.*jake-fuhrimans-projects\.vercel\.app$/,
         ]
       : ["http://localhost:3000"],
   credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
 };
 
 app.use(cors(corsOptions));
