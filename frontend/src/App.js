@@ -139,8 +139,7 @@ function App() {
     <div className="App">
       <header className="App-header">
         <h1>Family Cookbook</h1>
-        <p>Create and manage the family's favorite recipes</p>
-
+        <p>Create and manage the family's recipes. Feel free to add recipes that aren't already in the cookbook that your family enjoys to share with everyone!</p>
         <div className="app-actions">
           <CreateRecipeButton onRecipeCreated={handleRecipeCreated} />
         </div>
