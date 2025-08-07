@@ -1,0 +1,8 @@
+# Railway deployment configuration
+# This file tells Railway how to deploy the backend
+
+[build]
+  command = "npm install"
+
+[deploy]
+  startCommand = "npm start"

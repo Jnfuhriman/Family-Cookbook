@@ -3,6 +3,10 @@ import Modal from "./Modal";
 import RecipeForm from "./RecipeForm";
 import "../styles/CreateRecipeButton.css";
 
+// API Base URL - uses environment variable or defaults to localhost
+const API_BASE_URL =
+  process.env.REACT_APP_API_URL || "http://localhost:5000/api";
+
 const CreateRecipeButton = ({ onRecipeCreated }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -26,7 +30,7 @@ const CreateRecipeButton = ({ onRecipeCreated }) => {
     setError(null);
 
     try {
-      const response = await fetch("http://localhost:5000/api/recipes", {
+      const response = await fetch(`${API_BASE_URL}/recipes`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -45,6 +45,42 @@
   box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.2);
 }
 
+/* Password Input Container */
+.password-input-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.password-input-container input {
+  padding-right: 3rem;
+}
+
+.password-toggle-btn {
+  position: absolute;
+  right: 0.75rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.2rem;
+  padding: 0.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+  line-height: 1;
+}
+
+.password-toggle-btn:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.password-toggle-btn:focus {
+  outline: 2px solid #667eea;
+  outline-offset: 2px;
+}
+
 .form-row {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -120,10 +156,16 @@
 .form-actions {
   display: flex;
   gap: 1rem;
-  justify-content: flex-end;
+  justify-content: center;
   padding-top: 2rem;
-  border-top: 1px solid #e0e0e0;
   margin-top: 2rem;
+}
+
+/* Passphrase Actions */
+.passphrase-actions {
+  display: flex;
+  justify-content: center;
+  margin-top: 1.5rem;
 }
 
 .cancel-btn {
@@ -164,6 +206,15 @@
 
 /* Responsive Design */
 @media (max-width: 768px) {
+  .recipe-form {
+    padding: 1rem;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
   .ingredient-row {
     grid-template-columns: 1fr;
     gap: 0.5rem;
@@ -182,10 +233,49 @@
 
   .form-actions {
     flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .passphrase-actions {
+    margin-top: 1rem;
+  }
+
+  .submit-btn,
+  .cancel-btn {
+    min-width: auto;
+    width: 100%;
+    padding: 0.875rem 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .recipe-form {
+    padding: 0.75rem;
+  }
+
+  .modal-content {
+    width: 95%;
+    margin: 1rem;
+  }
+
+  .modal-body {
+    padding: 1rem;
   }
 
   .form-row {
     grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+
+  .form-group label {
+    font-size: 0.9rem;
+  }
+
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    font-size: 16px; /* Prevents zoom on iOS */
+    padding: 0.75rem;
   }
 }
 

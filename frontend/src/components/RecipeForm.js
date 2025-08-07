@@ -19,6 +19,11 @@ const RecipeForm = ({ onSubmit, onCancel }) => {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [validationError, setValidationError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -367,19 +372,35 @@ const RecipeForm = ({ onSubmit, onCancel }) => {
           <label htmlFor="validationPhrase">
             Enter the required passphrase *
           </label>
-          <input
-            type="text"
-            id="validationPhrase"
-            name="validationPhrase"
-            value={formData.validationPhrase}
-            onChange={handleInputChange}
-            required
-            placeholder="Enter passphrase..."
-            className={validationError ? "error" : ""}
-          />
+          <div className="password-input-container">
+            <input
+              type={showPassword ? "text" : "password"}
+              id="validationPhrase"
+              name="validationPhrase"
+              value={formData.validationPhrase}
+              onChange={handleInputChange}
+              required
+              placeholder="Enter passphrase..."
+              className={validationError ? "error" : ""}
+            />
+            <button
+              type="button"
+              className="password-toggle-btn"
+              onClick={togglePasswordVisibility}
+              aria-label={showPassword ? "Hide password" : "Show password"}
+            >
+              {showPassword ? "🙈" : "👁️"}
+            </button>
+          </div>
           {validationError && (
             <div className="error-message">{validationError}</div>
           )}
+        </div>
+
+        <div className="passphrase-actions">
+          <button type="submit" className="submit-btn" disabled={isSubmitting}>
+            {isSubmitting ? "Creating Recipe..." : "Create Recipe"}
+          </button>
         </div>
       </div>
 
@@ -387,9 +408,6 @@ const RecipeForm = ({ onSubmit, onCancel }) => {
       <div className="form-actions">
         <button type="button" className="cancel-btn" onClick={onCancel}>
           Cancel
-        </button>
-        <button type="submit" className="submit-btn" disabled={isSubmitting}>
-          {isSubmitting ? "Creating Recipe..." : "Create Recipe"}
         </button>
       </div>
     </form>

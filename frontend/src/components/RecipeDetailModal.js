@@ -8,10 +8,17 @@ const RecipeDetailModal = ({ recipe, isOpen, onClose, onSave }) => {
   const [showPassphraseModal, setShowPassphraseModal] = useState(false);
   const [passphrase, setPassphrase] = useState("");
   const [passphraseError, setPassphraseError] = useState("");
+  const [showPassphrasePassword, setShowPassphrasePassword] = useState(false);
+  const [tagsInputValue, setTagsInputValue] = useState("");
+
+  const togglePassphrasePasswordVisibility = () => {
+    setShowPassphrasePassword(!showPassphrasePassword);
+  };
 
   useEffect(() => {
     if (recipe) {
       setEditedRecipe({ ...recipe });
+      setTagsInputValue(recipe.tags ? recipe.tags.join(", ") : "");
     }
   }, [recipe]);
 
@@ -37,7 +44,8 @@ const RecipeDetailModal = ({ recipe, isOpen, onClose, onSave }) => {
       recipe.servings !== editedRecipe.servings ||
       recipe.difficulty !== editedRecipe.difficulty ||
       !compareArrays(recipe.ingredients, editedRecipe.ingredients) ||
-      !compareArrays(recipe.instructions, editedRecipe.instructions)
+      !compareArrays(recipe.instructions, editedRecipe.instructions) ||
+      !compareArrays(recipe.tags || [], editedRecipe.tags || [])
     );
   };
 
@@ -85,6 +93,7 @@ const RecipeDetailModal = ({ recipe, isOpen, onClose, onSave }) => {
 
   const handleCancel = () => {
     setEditedRecipe({ ...recipe });
+    setTagsInputValue(recipe.tags ? recipe.tags.join(", ") : "");
     setIsEditing(false);
   };
 
@@ -325,6 +334,43 @@ const RecipeDetailModal = ({ recipe, isOpen, onClose, onSave }) => {
                   <span className="info-value">{editedRecipe.servings}</span>
                 )}
               </div>
+              <div className="info-item tags-item">
+                <span className="info-label">Tags:</span>
+                {isEditing ? (
+                  <input
+                    type="text"
+                    value={tagsInputValue}
+                    onChange={(e) => {
+                      setTagsInputValue(e.target.value);
+                    }}
+                    onBlur={(e) => {
+                      // Parse and clean tags when field loses focus
+                      const tagsString = e.target.value;
+                      const cleanedTags = tagsString
+                        .split(",")
+                        .map((tag) => tag.trim())
+                        .filter((tag) => tag.length > 0);
+                      handleFieldChange("tags", cleanedTags);
+                      // Update input value to show cleaned version
+                      setTagsInputValue(cleanedTags.join(", "));
+                    }}
+                    className="edit-info-input"
+                    placeholder="Enter tags separated by commas"
+                  />
+                ) : (
+                  <div className="tags-display">
+                    {editedRecipe.tags && editedRecipe.tags.length > 0 ? (
+                      editedRecipe.tags.map((tag, index) => (
+                        <span key={index} className="tag-pill">
+                          {tag}
+                        </span>
+                      ))
+                    ) : (
+                      <span className="info-value no-tags">No tags</span>
+                    )}
+                  </div>
+                )}
+              </div>
             </div>
           </div>
 
@@ -470,21 +516,33 @@ const RecipeDetailModal = ({ recipe, isOpen, onClose, onSave }) => {
             </div>
             <div className="passphrase-modal-body">
               <p>Please enter the required passphrase to edit this recipe:</p>
-              <input
-                type="text"
-                value={passphrase}
-                onChange={(e) => setPassphrase(e.target.value)}
-                onKeyPress={(e) =>
-                  e.key === "Enter" && handlePassphraseSubmit()
-                }
-                placeholder="Enter passphrase..."
-                className={
-                  passphraseError
-                    ? "passphrase-input error"
-                    : "passphrase-input"
-                }
-                autoFocus
-              />
+              <div className="password-input-container">
+                <input
+                  type={showPassphrasePassword ? "text" : "password"}
+                  value={passphrase}
+                  onChange={(e) => setPassphrase(e.target.value)}
+                  onKeyPress={(e) =>
+                    e.key === "Enter" && handlePassphraseSubmit()
+                  }
+                  placeholder="Enter passphrase..."
+                  className={
+                    passphraseError
+                      ? "passphrase-input error"
+                      : "passphrase-input"
+                  }
+                  autoFocus
+                />
+                <button
+                  type="button"
+                  className="password-toggle-btn"
+                  onClick={togglePassphrasePasswordVisibility}
+                  aria-label={
+                    showPassphrasePassword ? "Hide password" : "Show password"
+                  }
+                >
+                  {showPassphrasePassword ? "🙈" : "👁️"}
+                </button>
+              </div>
               {passphraseError && (
                 <div className="passphrase-error">{passphraseError}</div>
               )}

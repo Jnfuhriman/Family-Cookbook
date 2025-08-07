@@ -4,6 +4,10 @@ import RecipeCard from "./components/RecipeCard";
 import RecipeDetailModal from "./components/RecipeDetailModal";
 import React, { useState, useEffect } from "react";
 
+// API Base URL - uses environment variable or defaults to localhost
+const API_BASE_URL =
+  process.env.REACT_APP_API_URL || "http://localhost:5000/api";
+
 function App() {
   const [recipes, setRecipes] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -20,7 +24,7 @@ function App() {
   const fetchRecipes = async () => {
     try {
       setLoading(true);
-      const response = await fetch("http://localhost:5000/api/recipes");
+      const response = await fetch(`${API_BASE_URL}/recipes`);
       const result = await response.json();
 
       if (!response.ok) {
@@ -46,7 +50,7 @@ function App() {
   const handleRecipeUpdated = async (updatedRecipe) => {
     try {
       const response = await fetch(
-        `http://localhost:5000/api/recipes/${updatedRecipe._id}`,
+        `${API_BASE_URL}/recipes/${updatedRecipe._id}`,
         {
           method: "PUT",
           headers: {
