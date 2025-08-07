@@ -10,7 +10,10 @@ const PORT = process.env.PORT || 5000;
 const corsOptions = {
   origin:
     process.env.NODE_ENV === "production"
-      ? ["https://your-vercel-app.vercel.app"] // Update this with your Vercel URL
+      ? [
+          "https://family-cookbook-frontend-g6of15ap7-jake-fuhrimans-projects.vercel.app",
+          "https://family-cookbook-frontend.vercel.app",
+        ]
       : ["http://localhost:3000"],
   credentials: true,
 };
