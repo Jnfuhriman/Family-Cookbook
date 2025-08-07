@@ -9,7 +9,6 @@ const API_BASE_URL =
 
 const CreateRecipeButton = ({ onRecipeCreated }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
 
@@ -26,7 +25,6 @@ const CreateRecipeButton = ({ onRecipeCreated }) => {
   };
 
   const handleRecipeSubmit = async (recipeData) => {
-    setIsLoading(true);
     setError(null);
 
     try {
@@ -58,8 +56,6 @@ const CreateRecipeButton = ({ onRecipeCreated }) => {
     } catch (error) {
       console.error("Error creating recipe:", error);
       setError(error.message || "Failed to create recipe. Please try again.");
-    } finally {
-      setIsLoading(false);
     }
   };
 
