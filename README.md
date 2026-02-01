@@ -91,6 +91,117 @@ family-cookbook/
 - CORS middleware
 - dotenv for environment variables
 
+## Deployment
+
+This project uses a split deployment strategy:
+- **Frontend**: Deployed to Vercel
+- **Backend**: Deployed to Railway
+
+### Frontend Deployment (Vercel)
+
+The frontend React application is automatically deployed to Vercel through the configured [vercel.json](vercel.json) file.
+
+#### Automatic Deployment
+1. **Connect Repository**: Link your GitHub repository to Vercel
+2. **Automatic Builds**: Vercel automatically deploys on every push to main branch
+3. **Build Configuration**: Defined in `vercel.json`:
+   ```json
+   {
+     "version": 2,
+     "builds": [
+       {
+         "src": "frontend/package.json",
+         "use": "@vercel/static-build",
+         "config": { "distDir": "build" }
+       }
+     ],
+     "buildCommand": "cd frontend && npm install && npm run build",
+     "outputDirectory": "frontend/build"
+   }
+   ```
+
+#### Manual Deployment
+```bash
+# Install Vercel CLI
+npm install -g vercel
+
+# Deploy from project root
+vercel --prod
+```
+
+### Backend Deployment (Railway)
+
+The backend Node.js API is deployed to Railway using the [railway.toml](backend/railway.toml) configuration.
+
+#### Automatic Deployment
+1. **Connect Repository**: Link your GitHub repository to Railway
+2. **Configure Service**: Point Railway to the `/backend` directory
+3. **Environment Variables**: Set up in Railway dashboard:
+   - `MONGODB_URI` - MongoDB connection string
+   - `PORT` - Automatically provided by Railway
+   - Any other environment variables from `.env`
+
+#### Railway Configuration
+The `backend/railway.toml` file contains:
+```toml
+[build]
+  command = "npm install"
+
+[deploy]
+  startCommand = "npm start"
+```
+
+#### Manual Deployment
+```bash
+# Install Railway CLI
+npm install -g @railway/cli
+
+# Login and deploy
+railway login
+railway deploy
+```
+
+### Environment Variables
+
+#### Frontend (.env files)
+- **Development**: Uses `http://localhost:5000/api`
+- **Production**: Uses Railway backend URL `https://family-cookbook-backend-production.up.railway.app/api`
+
+#### Backend
+Required environment variables for Railway:
+```env
+MONGODB_URI=your_mongodb_connection_string
+PORT=3000  # Automatically set by Railway
+NODE_ENV=production
+```
+
+### Deployment Checklist
+
+Before deploying:
+
+**Frontend (Vercel)**
+- [ ] Ensure `.env.production` has correct backend API URL
+- [ ] Test build locally: `cd frontend && npm run build`
+- [ ] Verify all dependencies are in `package.json`
+
+**Backend (Railway)**
+- [ ] Set up MongoDB database (MongoDB Atlas recommended)
+- [ ] Configure environment variables in Railway dashboard
+- [ ] Test server locally: `cd backend && npm start`
+- [ ] Ensure `railway.toml` is configured correctly
+
+**Post-Deployment**
+- [ ] Test API endpoints from deployed backend
+- [ ] Verify frontend can communicate with deployed backend
+- [ ] Check all features work in production environment
+
+### Monitoring & Logs
+
+- **Vercel**: Check deployment logs and function logs in Vercel dashboard
+- **Railway**: Monitor application logs and metrics in Railway dashboard
+- **Frontend Errors**: Use browser developer tools and any error tracking service
+- **Backend Logs**: Available in Railway dashboard under deployments
+
 ## Development
 
 ### Frontend Development
