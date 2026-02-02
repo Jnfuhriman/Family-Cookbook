@@ -96,7 +96,19 @@
   margin-bottom: 0.5rem;
 }
 
+.ingredient-row-with-group {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1.5fr auto;
+  gap: 0.5rem;
+  align-items: end;
+  margin-bottom: 0.5rem;
+}
+
 .ingredient-row .form-group {
+  margin-bottom: 0;
+}
+
+.ingredient-row-with-group .form-group {
   margin-bottom: 0;
 }
 
@@ -216,6 +228,11 @@
   }
 
   .ingredient-row {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+
+  .ingredient-row-with-group {
     grid-template-columns: 1fr;
     gap: 0.5rem;
   }
