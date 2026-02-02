@@ -139,7 +139,7 @@ const RecipeDetailModal = ({ recipe, isOpen, onClose, onSave }) => {
   const addIngredient = () => {
     setEditedRecipe((prev) => ({
       ...prev,
-      ingredients: [...prev.ingredients, { name: "", amount: "", unit: "" }],
+      ingredients: [...prev.ingredients, { name: "", amount: "", unit: "", group: "" }],
     }));
   };
 
@@ -398,11 +398,11 @@ const RecipeDetailModal = ({ recipe, isOpen, onClose, onSave }) => {
                   </button>
                 )}
               </div>
-              <div className="ingredients-list">
-                {editedRecipe.ingredients.map((ingredient, index) => (
-                  <div key={index} className="ingredient-item">
-                    {isEditing ? (
-                      <div className="edit-ingredient-row">
+              {isEditing ? (
+                <div className="ingredients-list">
+                  {editedRecipe.ingredients.map((ingredient, index) => (
+                    <div key={index} className="ingredient-item">
+                      <div className="edit-ingredient-row-with-group">
                         <input
                           type="text"
                           value={ingredient.name}
@@ -442,6 +442,19 @@ const RecipeDetailModal = ({ recipe, isOpen, onClose, onSave }) => {
                           placeholder="Unit"
                           className="edit-ingredient-input small"
                         />
+                        <input
+                          type="text"
+                          value={ingredient.group || ""}
+                          onChange={(e) =>
+                            handleIngredientChange(
+                              index,
+                              "group",
+                              e.target.value
+                            )
+                          }
+                          placeholder="Group (optional)"
+                          className="edit-ingredient-input small"
+                        />
                         <button
                           className="remove-item-btn"
                           onClick={() => removeIngredient(index)}
@@ -449,27 +462,98 @@ const RecipeDetailModal = ({ recipe, isOpen, onClose, onSave }) => {
                           ×
                         </button>
                       </div>
-                    ) : (
-                      <label className="ingredient-checkbox">
-                        <input
-                          type="checkbox"
-                          checked={checkedIngredients[index] || false}
-                          onChange={() => handleIngredientCheck(index)}
-                        />
-                        <span className="checkmark"></span>
-                        <span
-                          className={`ingredient-text ${
-                            checkedIngredients[index] ? "checked" : ""
-                          }`}
-                        >
-                          {ingredient.amount} {ingredient.unit}{" "}
-                          {ingredient.name}
-                        </span>
-                      </label>
-                    )}
-                  </div>
-                ))}
-              </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                (() => {
+                  // Group ingredients by group field
+                  const groupedIngredients = editedRecipe.ingredients.reduce(
+                    (groups, ingredient, index) => {
+                      const groupName = ingredient.group?.trim() || "";
+                      if (!groups[groupName]) {
+                        groups[groupName] = [];
+                      }
+                      groups[groupName].push({ ...ingredient, originalIndex: index });
+                      return groups;
+                    },
+                    {}
+                  );
+
+                  const hasGroups = Object.keys(groupedIngredients).length > 1 || 
+                    (Object.keys(groupedIngredients).length === 1 && Object.keys(groupedIngredients)[0] !== "");
+
+                  if (!hasGroups) {
+                    // No groups - display flat list
+                    return (
+                      <div className="ingredients-list">
+                        {editedRecipe.ingredients.map((ingredient, index) => (
+                          <div key={index} className="ingredient-item">
+                            <label className="ingredient-checkbox">
+                              <input
+                                type="checkbox"
+                                checked={checkedIngredients[index] || false}
+                                onChange={() => handleIngredientCheck(index)}
+                              />
+                              <span className="checkmark"></span>
+                              <span
+                                className={`ingredient-text ${
+                                  checkedIngredients[index] ? "checked" : ""
+                                }`}
+                              >
+                                {ingredient.amount} {ingredient.unit}{" "}
+                                {ingredient.name}
+                              </span>
+                            </label>
+                          </div>
+                        ))}
+                      </div>
+                    );
+                  } else {
+                    // Has groups - display grouped list
+                    return (
+                      <div className="ingredients-grouped">
+                        {Object.entries(groupedIngredients)
+                          .sort(([a], [b]) => {
+                            // Sort so empty group comes first
+                            if (a === "") return -1;
+                            if (b === "") return 1;
+                            return a.localeCompare(b);
+                          })
+                          .map(([groupName, ingredients]) => (
+                            <div key={groupName} className="ingredient-group">
+                              {groupName && (
+                                <h4 className="ingredient-group-title">{groupName}</h4>
+                              )}
+                              <div className="ingredients-list">
+                                {ingredients.map((ingredient) => (
+                                  <div key={ingredient.originalIndex} className="ingredient-item">
+                                    <label className="ingredient-checkbox">
+                                      <input
+                                        type="checkbox"
+                                        checked={checkedIngredients[ingredient.originalIndex] || false}
+                                        onChange={() => handleIngredientCheck(ingredient.originalIndex)}
+                                      />
+                                      <span className="checkmark"></span>
+                                      <span
+                                        className={`ingredient-text ${
+                                          checkedIngredients[ingredient.originalIndex] ? "checked" : ""
+                                        }`}
+                                      >
+                                        {ingredient.amount} {ingredient.unit}{" "}
+                                        {ingredient.name}
+                                      </span>
+                                    </label>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          ))}
+                      </div>
+                    );
+                  }
+                })()
+              )}
             </div>
 
             <div className="instructions-section">

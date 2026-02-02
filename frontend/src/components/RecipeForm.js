@@ -5,7 +5,7 @@ const RecipeForm = ({ onSubmit, onCancel }) => {
   const [formData, setFormData] = useState({
     title: "",
     description: "",
-    ingredients: [{ name: "", amount: "", unit: "" }],
+    ingredients: [{ name: "", amount: "", unit: "", group: "" }],
     instructions: [{ step: 1, description: "" }],
     prepTime: "",
     cookTime: "",
@@ -45,7 +45,7 @@ const RecipeForm = ({ onSubmit, onCancel }) => {
   const addIngredient = () => {
     setFormData((prev) => ({
       ...prev,
-      ingredients: [...prev.ingredients, { name: "", amount: "", unit: "" }],
+      ingredients: [...prev.ingredients, { name: "", amount: "", unit: "", group: "" }],
     }));
   };
 
@@ -266,7 +266,7 @@ const RecipeForm = ({ onSubmit, onCancel }) => {
       <div className="form-section">
         <h3>Ingredients</h3>
         {formData.ingredients.map((ingredient, index) => (
-          <div key={index} className="ingredient-row">
+          <div key={index} className="ingredient-row-with-group">
             <div className="form-group">
               <input
                 type="text"
@@ -298,6 +298,16 @@ const RecipeForm = ({ onSubmit, onCancel }) => {
                   handleIngredientChange(index, "unit", e.target.value)
                 }
                 required
+              />
+            </div>
+            <div className="form-group">
+              <input
+                type="text"
+                placeholder="Group (optional)"
+                value={ingredient.group}
+                onChange={(e) =>
+                  handleIngredientChange(index, "group", e.target.value)
+                }
               />
             </div>
             {formData.ingredients.length > 1 && (
